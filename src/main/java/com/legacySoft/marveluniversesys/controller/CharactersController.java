@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import static com.legacySoft.marveluniversesys.controller.CharactersController.MARVEL_API_BASE_URL;
@@ -35,6 +32,16 @@ public class CharactersController {
     @GetMapping("characters")
     public String getAllCharacters(){
         String url = MARVEL_API_BASE_URL + "characters?ts=1" +"&apikey=" + API_KEY + "&hash=" + HASH;
+
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(url, String.class);
+
+        return response;
+    }
+
+    @GetMapping("characters/{characterId}")
+    public String getCharacter(@PathVariable Long characterId){
+        String url = MARVEL_API_BASE_URL + "characters/"+ characterId.toString() +"?ts=1" +"&apikey=" + API_KEY + "&hash=" + HASH;
 
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(url, String.class);
